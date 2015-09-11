@@ -9,3 +9,7 @@
 # exec
 bookstore
 
+# config file
+.bk_settings
+
+

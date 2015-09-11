@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bookstore/config"
 	"bookstore/models"
 	"fmt"
 	"log"
@@ -14,7 +15,8 @@ type Env struct {
 
 func main() {
 
-	db, err := models.NewDB("postgres://user:password@localhost/bookstore?sslmode=disable")
+	rtConfig := config.Parse()
+	db, err := models.NewDB(config.BuildConnectionString(rtConfig))
 	if err != nil {
 		log.Panic(err)
 	}
@@ -24,6 +26,7 @@ func main() {
 	http.HandleFunc("/books", env.booksIndex)
 	http.HandleFunc("/books/show", env.booksShow)
 	http.HandleFunc("/books/create", env.booksCreate)
+
 	http.ListenAndServe(":3000", nil)
 }
 
