@@ -6,17 +6,17 @@ import (
 	_ "github.com/lib/pq"
 )
 
+type Datastore interface {
+	AllBooks() ([]*Book, error)
+	BookByIsbn(isbn string) (*Book, error)
+	CreateBook(isbn string, title string, author string, price float64) (int64, error)
+}
+
 type Book struct {
 	Isbn   string
 	Title  sql.NullString
 	Author sql.NullString
 	Price  sql.NullFloat64
-}
-
-type BookDatastore interface {
-	AllBooks() ([]*Book, error)
-	BookByIsbn(isbn string) (*Book, error)
-	CreateBook(isbn string, title string, author string, price float64) (int64, error)
 }
 
 func (db *DB) AllBooks() ([]*Book, error) {

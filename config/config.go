@@ -16,6 +16,7 @@ type RuntimeConfig struct {
 }
 
 func (config *RuntimeConfig) override(params *CmdParams) {
+
 	if params.DatabaseUserId != "" {
 		config.DatabaseUserId = params.DatabaseUserId
 	}
@@ -82,20 +83,17 @@ func Load(params *CmdParams) (*RuntimeConfig, error) {
 	if err := json.Unmarshal(jsonByte, &config); err != nil {
 		return nil, err
 	}
-	fmt.Println(config.DatabaseName, config.DatabaseUserId, config.DatabaseUserPassword)
 	setDefaultConfig(config, defaultCmdParams)
 	config.override(params)
-	if params.DatabaseName == "" || params.DatabaseUserId == "" || params.DatabaseUserPassword == "" {
+	if config.DatabaseName == "" || config.DatabaseUserId == "" || config.DatabaseUserPassword == "" {
 		fmt.Println(params.DatabaseName, params.DatabaseUserId, params.DatabaseUserPassword)
-		return nil, errors.New("Missing required configuration (Database, UserId, Password)")
+		return nil, errors.New("Found config file, Missing required configuration (Database, UserId, Password)")
 	}
 
 	return config, nil
 }
 
 func BuildConnectionString(config *RuntimeConfig) string {
-
-	// "postgres://user:password@localhost/bookstore?sslmode=disable"
 
 	return fmt.Sprintf("postgres://%s:%s@localhost/%s?sslmode=disable", config.DatabaseUserId, config.DatabaseUserPassword, config.DatabaseName)
 
