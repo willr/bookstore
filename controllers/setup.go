@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"bookstore/models"
+	//	"bookstore/server"
 	"bookstore/server"
 	"net/http"
 )
@@ -31,7 +32,16 @@ func (ctlr controller) SetupControllers() {
 
 func (ctlr controller) RunServer() {
 
-	http.ListenAndServe(":3000", nil)
+	host := ""
+	port := "3000"
+
+	printHost := host
+	if printHost == "" {
+		printHost = "localhost"
+	}
+	ctlr.server.Logger.Print("Listening on " + printHost + ":" + port)
+
+	http.ListenAndServe(host+":"+port, nil)
 }
 
 func NewController(svr *server.Server, ds models.Datastore) Controller {

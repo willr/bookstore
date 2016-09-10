@@ -10,6 +10,7 @@ import (
 )
 
 type RuntimeConfig struct {
+	DatabaseDriver       string `json:"database_driver"`
 	DatabaseUserId       string `json:"database_user_id"`
 	DatabaseUserPassword string `json:"database_user_password"`
 	DatabaseName         string `json:"database_name"`
@@ -17,6 +18,9 @@ type RuntimeConfig struct {
 
 func (config *RuntimeConfig) override(params *CmdParams) {
 
+	if params.DatabaseDriver != "" {
+		config.DatabaseDriver = params.DatabaseDriver
+	}
 	if params.DatabaseUserId != "" {
 		config.DatabaseUserId = params.DatabaseUserId
 	}
@@ -30,6 +34,9 @@ func (config *RuntimeConfig) override(params *CmdParams) {
 
 func setDefaultConfig(config *RuntimeConfig, params *CmdParams) {
 
+	if config.DatabaseDriver == "" {
+		config.DatabaseDriver = params.DatabaseDriver
+	}
 	if config.DatabaseUserId == "" {
 		config.DatabaseUserId = params.DatabaseUserId
 	}

@@ -13,3 +13,8 @@ bookstore
 .bk_settings
 
 
+# vendor files
+vendor
+
+# output dir
+output

@@ -1,0 +1,6 @@
+#!/bin/bash 
+
+time go build -v -o output/server bookstore/server/cli
+time go build -v -o output/client bookstore/client/cli
+
+
